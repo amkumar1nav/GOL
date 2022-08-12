@@ -1,10 +1,5 @@
 pipeline{
-  agent any
-   tools {
-      // Install the Maven version configured as "M3" and add it to the path.
-      maven "M3"
-   }
-
+  agent none
   stages{
     stage('Compile'){
       agent any
@@ -18,7 +13,12 @@ pipeline{
         sh 'echo Sonarqube Code Quality Check Done'
       }
     }
-    
+    stage('Test'){
+      agent any
+      steps{
+        sh 'mvn test'
+      }
+    } 
     stage('Package'){
       agent any
       steps{
@@ -28,7 +28,7 @@ pipeline{
     stage('Upload War File To Artifactory'){
       agent any
       steps{
-        sh 'mvn echo Uploaded War file to Artifactory'
+        sh 'echo Uploaded War file to Artifactory'
       }
     }
     stage('Deploy'){
